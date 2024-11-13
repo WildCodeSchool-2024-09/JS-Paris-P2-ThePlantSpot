@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "../../JS-Paris-P2-ThePlantSpot/src/pages/Home.tsx";
-import Search from "../../JS-Paris-P2-ThePlantSpot/src/pages/Search.tsx";
+import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import Search from "./pages/Search";
 
 function App() {
-	const [plant, setPlant] = useState(null);
+	const [plant, setPlant] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		const url = "https://house-plants2.p.rapidapi.com/all";
-
 		const options = {
 			method: "GET",
 			headers: {
@@ -42,11 +42,10 @@ function App() {
 	if (loading) return <div>Chargement...</div>;
 	if (error) return <div>Erreur: {error}</div>;
 
-	console.log(plant);
 	return (
 		<Router>
+			<Header />
 			<div>
-				{/* Navigation */}
 				<nav>
 					<ul>
 						<li>
@@ -58,33 +57,10 @@ function App() {
 					</ul>
 				</nav>
 
-				{/* Définir les Routes */}
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/search" element={<Search />} />
 				</Routes>
-				<div>
-					<h1>Liste des Plantes</h1>
-					<ul>
-						{plant.map((item, index) => (
-							<li key={index}>
-								{item["Temperature max"]?.C && item["Temperature min"]?.C ? (
-									<span>
-										{item["Temperature max"].C - item["Temperature min"].C}°C
-									</span>
-								) : item["Temperature max"]?.C &&
-									!item["Temperature min"]?.C ? (
-									<span>
-										{item["Temperature max"].C}°C (Min temperature data not
-										available)
-									</span>
-								) : (
-									<span>Temperature data not available</span>
-								)}
-							</li>
-						))}
-					</ul>
-				</div>
 			</div>
 		</Router>
 	);
