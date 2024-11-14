@@ -1,5 +1,6 @@
+import Body_home from "../components/Body_home";
 const Home = () => {
-	return <h1>Bienvenue sur la page d'accueil !</h1>;
+	return <Body_home />;
 };
 
 export default Home;
